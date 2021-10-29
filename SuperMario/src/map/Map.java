@@ -35,7 +35,6 @@ public class Map {
     }
 
     public void draw(Graphics2D g) {
-
         for(Brick brick: bricks){
             brick.draw(g);
         }
@@ -75,6 +74,12 @@ public class Map {
         for(QuestionBrick brick: questionBricks){
             brick.animate();
         }
+
+//        for(GameObject gameObject: getAllObjectsInMap()){
+//            gameObject.updateLocation();
+//        }
+
+        mario.updateLocation();
     }
 
     public int getWidth() {
@@ -92,4 +97,5 @@ public class Map {
     public void setMario(Mario mario) {
         this.mario = mario;
     }
+
 }

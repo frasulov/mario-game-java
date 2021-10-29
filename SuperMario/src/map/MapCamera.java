@@ -3,6 +3,7 @@ package map;
 import Game.CONSTANTS;
 import Game.GUI;
 import GameObjects.GameObject;
+import GameObjects.Mario;
 
 public class MapCamera {
 
@@ -23,8 +24,7 @@ public class MapCamera {
         for(GameObject object: map.getAllObjectsInMap()){
             if (x <= map.getWidth() - CONSTANTS.WIDTH) {
                 if (object.isMoveWithBackground()) {
-                    object.setLocation(object.getX() - xAmount, object.getY() + yAmount);
-                    gui.repaint();
+                    object.setLocation(object.getX()-xAmount, object.getY()+yAmount);
                 }
             }
         }

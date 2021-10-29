@@ -47,7 +47,11 @@ public class Game implements Runnable {
         }else if(actionType == ActionType.RIGHT) {
             mario.move(Direction.RIGHT, mapCamera);
         }else if (actionType == ActionType.RELEASED){
+            mario.setRunning(false);
             mario.setVelX(0);
+            mapCamera.moveCamera(0,0);
+        }else if (actionType == ActionType.UP){
+            mario.jump();
         }
     }
 
@@ -65,7 +69,7 @@ public class Game implements Runnable {
     @Override
     public void run() {
         long lastTime = System.nanoTime();
-        double nsPerTick = 1000000000D / 64;
+        double nsPerTick = 1000000000 / 70;
 
         int ticks = 0;
         int frames = 0;
@@ -76,27 +80,15 @@ public class Game implements Runnable {
             long now = System.nanoTime();
             delta += (now - lastTime) / nsPerTick;
             lastTime = now;
-            boolean shouldRender = true;
 
             while (delta >= 1) {
                 ticks++;
                 tick();
                 delta -= 1;
-                shouldRender = true;
-            }
-
-            try {
-                Thread.sleep(2);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-
-            if (shouldRender) {
                 gui.getMap().updateGameObjects();
-                gui.repaint();
                 frames++;
-                render();
             }
+            gui.repaint();
 
             if (System.currentTimeMillis() - lastTimer >= 1000) {
                 lastTimer += 1000;
@@ -108,11 +100,11 @@ public class Game implements Runnable {
         }
     }
 
+
+
+
     public void tick() {
         tickCount++;
     }
 
-    public void render() {
-//        System.out.println("here running");
-    }
 }

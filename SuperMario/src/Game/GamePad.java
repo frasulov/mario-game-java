@@ -22,6 +22,8 @@ public class GamePad implements KeyListener {
             game.doAction(ActionType.LEFT);
         }else if (keyCode == KeyEvent.VK_RIGHT) {
             game.doAction(ActionType.RIGHT);
+        }else if (keyCode == KeyEvent.VK_UP){
+            game.doAction(ActionType.UP);
         }
     }
 

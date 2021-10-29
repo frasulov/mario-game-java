@@ -32,7 +32,7 @@ public class QuestionBrick extends Brick{
 
     public void animate(){
         if (!broke){
-            setImage(animation.animate(120));
+            setImage(animation.animate(30));
         }
     }
 }

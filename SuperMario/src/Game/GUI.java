@@ -57,7 +57,6 @@ public class GUI extends JPanel {
 
         g.drawString(String.format("x %2d", 3), 450, 75);
 
-
     }
 
     public Map getMap() {

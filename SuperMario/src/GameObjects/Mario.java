@@ -17,6 +17,9 @@ public class Mario extends GameObject{
     private int lives;
     private int coins;
     private int points;
+    private boolean jumping;
+    private boolean falling;
+    private boolean running;
     private Animation animation;
     private Direction direction;
     private HashMap<String, BufferedImage> marioImages = new HashMap<>();
@@ -28,13 +31,12 @@ public class Mario extends GameObject{
         BufferedImage image = getMarioImage(direction, false, false);
         setImage(image);
         lives = 3;
-
         animation = new Animation(marioImages, direction);
     }
 
     @Override
     public void draw(Graphics g){
-        super.setImage(getMarioImage(direction, getVelX() != 0, getVelY() != 0));
+        super.setImage(getMarioImage(direction, running, getVelY() != 0));
         super.draw(g);
     }
 
@@ -45,6 +47,8 @@ public class Mario extends GameObject{
             } else if (isMovingInXOrbit) {
                 animation.setDirection(direction);
                 return animation.animateMario(20);
+            }else if (isMovingInYOrbit){
+                return marioImages.get("static_right");
             }
         }else{
             if (!isMovingInXOrbit && !isMovingInYOrbit) {
@@ -52,6 +56,8 @@ public class Mario extends GameObject{
             } else if (isMovingInXOrbit) {
                 animation.setDirection(direction);
                 return animation.animateMario(20);
+            }else if(isMovingInYOrbit){
+                return marioImages.get("static_left");
             }
         }
             return marioImages.get("static_right");
@@ -59,7 +65,6 @@ public class Mario extends GameObject{
 
 
     public void loadMarioImages(){
-
         try {
             marioImages.put("static_right", ImageIO.read(new File(CONSTANTS.FilePath+"SuperMario/src/backgroundImages/mario", "mario_right_static.png")));
             marioImages.put("static_left", ImageIO.read(new File(CONSTANTS.FilePath+"SuperMario/src/backgroundImages/mario", "static_left.png")));
@@ -82,19 +87,52 @@ public class Mario extends GameObject{
         this.direction = direction;
     }
 
+    public void jump() {
+        if (!jumping && !falling) {
+            jumping = true;
+            setVelY(10);
+        }
+    }
+
     public void move(Direction direction, MapCamera mapCamera) {
+        running = true;
         this.direction = direction;
         if (direction == Direction.RIGHT) {
-            setVelX(10);
-            if (getX() >= CONSTANTS.WIDTH/2)
-                mapCamera.moveCamera(10, 0);
-            else
-                updateLocation();
+            System.out.println("go to right --------------");
+            setVelX(4);
+            if (getX() >= CONSTANTS.WIDTH/2) {
+                setVelX(0);
+                mapCamera.moveCamera(5, 0);
+            }
         }else {
-            System.out.println("doint left");
-            setVelX(-10);
-            updateLocation();
+            if (getX() > 0) {
+                setVelX(-4);
+            }
         }
 
+    }
+
+    public boolean isJumping() {
+        return jumping;
+    }
+
+    public void setJumping(boolean jumping) {
+        this.jumping = jumping;
+    }
+
+    public boolean isFalling() {
+        return falling;
+    }
+
+    public void setFalling(boolean falling) {
+        this.falling = falling;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 }

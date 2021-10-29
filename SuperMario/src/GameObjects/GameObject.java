@@ -35,7 +35,33 @@ public class GameObject {
         }
     }
 
+
     public void updateLocation() {
+
+        if(this instanceof Mario){
+
+            if (((Mario) this).isJumping()) {
+                if (getVelY() <= 0){
+                    ((Mario) this).setJumping(false);
+                    ((Mario) this).setFalling(true);
+                }
+                velY -= CONSTANTS.Gravity;
+                y -= velY;
+            }
+            if (((Mario) this).isFalling()){
+                if (getY() >= 506){
+                    ((Mario) this).setFalling(false);
+                    setVelY(0);
+                }else{
+                    y += velY;
+                    velY += CONSTANTS.Gravity;
+                }
+            }
+
+
+        }
+
+
         x += velX;
     }
 

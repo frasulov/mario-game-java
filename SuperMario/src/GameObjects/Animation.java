@@ -47,7 +47,6 @@ public class Animation {
     }
 
     public BufferedImage animateMario(int speed) {
-        System.out.println("Direction: " + direction);
         count++;
         if(count > speed){
             if (direction == Direction.RIGHT) {
