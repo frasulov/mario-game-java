@@ -47,6 +47,7 @@ public class Animation {
     }
 
     public BufferedImage animateMario(int speed) {
+        System.out.println("Direction: " + direction);
         count++;
         if(count > speed){
             if (direction == Direction.RIGHT) {
@@ -56,6 +57,7 @@ public class Animation {
                     index ++;
                 current = marioRight.get(index);
             }else {
+                System.out.println("toleft");
                 if (index >= marioLeft.size() - 1)
                     index = 0;
                 else
@@ -78,5 +80,9 @@ public class Animation {
         return current;
     }
 
+    public void resetAnimation(){
+        count = 0;
+        index = 0;
+    }
 
 }

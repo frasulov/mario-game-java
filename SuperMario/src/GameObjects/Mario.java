@@ -1,6 +1,7 @@
 package GameObjects;
 
 import Game.CONSTANTS;
+import map.MapCamera;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -40,23 +41,34 @@ public class Mario extends GameObject{
     public BufferedImage getMarioImage(Direction direction, boolean isMovingInXOrbit, boolean isMovingInYOrbit) {
         if (direction == Direction.RIGHT) {
             if (!isMovingInXOrbit && !isMovingInYOrbit) {
-                return marioImages.get("static");
+                return marioImages.get("static_right");
+            } else if (isMovingInXOrbit) {
+                animation.setDirection(direction);
+                return animation.animateMario(20);
+            }
+        }else{
+            if (!isMovingInXOrbit && !isMovingInYOrbit) {
+                return marioImages.get("static_left");
             } else if (isMovingInXOrbit) {
                 animation.setDirection(direction);
                 return animation.animateMario(20);
             }
         }
-            return marioImages.get("static");
+            return marioImages.get("static_right");
     }
 
 
     public void loadMarioImages(){
 
         try {
-            marioImages.put("static", ImageIO.read(new File(CONSTANTS.FilePath+"SuperMario/src/backgroundImages/mario", "mario_right_static.png")));
+            marioImages.put("static_right", ImageIO.read(new File(CONSTANTS.FilePath+"SuperMario/src/backgroundImages/mario", "mario_right_static.png")));
+            marioImages.put("static_left", ImageIO.read(new File(CONSTANTS.FilePath+"SuperMario/src/backgroundImages/mario", "static_left.png")));
             marioImages.put("right_move_1", ImageIO.read(new File(CONSTANTS.FilePath+"SuperMario/src/backgroundImages/mario", "right_move_1.png")));
             marioImages.put("right_move_2", ImageIO.read(new File(CONSTANTS.FilePath+"SuperMario/src/backgroundImages/mario", "right_move_2.png")));
             marioImages.put("right_move_3", ImageIO.read(new File(CONSTANTS.FilePath+"SuperMario/src/backgroundImages/mario", "right_move_3.png")));
+            marioImages.put("left_move_1", ImageIO.read(new File(CONSTANTS.FilePath+"SuperMario/src/backgroundImages/mario", "left_move_1.png")));
+            marioImages.put("left_move_2", ImageIO.read(new File(CONSTANTS.FilePath+"SuperMario/src/backgroundImages/mario", "left_move_2.png")));
+            marioImages.put("left_move_3", ImageIO.read(new File(CONSTANTS.FilePath+"SuperMario/src/backgroundImages/mario", "left_move_3.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,5 +80,21 @@ public class Mario extends GameObject{
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public void move(Direction direction, MapCamera mapCamera) {
+        this.direction = direction;
+        if (direction == Direction.RIGHT) {
+            setVelX(10);
+            if (getX() >= CONSTANTS.WIDTH/2)
+                mapCamera.moveCamera(10, 0);
+            else
+                updateLocation();
+        }else {
+            System.out.println("doint left");
+            setVelX(-10);
+            updateLocation();
+        }
+
     }
 }

@@ -28,7 +28,7 @@ public class GamePad implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();
-        if (keyCode == KeyEvent.VK_RIGHT) {
+        if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_LEFT) {
             game.doAction(ActionType.RELEASED);
         }
     }

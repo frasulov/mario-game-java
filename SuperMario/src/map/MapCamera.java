@@ -21,7 +21,6 @@ public class MapCamera {
         x += xAmount;
         y += yAmount;
         for(GameObject object: map.getAllObjectsInMap()){
-            System.out.println("x: "+x);
             if (x <= map.getWidth() - CONSTANTS.WIDTH) {
                 if (object.isMoveWithBackground()) {
                     object.setLocation(object.getX() - xAmount, object.getY() + yAmount);
