@@ -51,7 +51,10 @@ public class MapMaker {
                     }else if (data.charAt(i) == '0' || data.charAt(i) == 'E' || data.charAt(i) == '|' || data.charAt(i) == 'U' || data.charAt(i) == 'L' || data.charAt(i) == 'G' || data.charAt(i) == 'D' || data.charAt(i) == 'H' || data.charAt(i) == 'Q'){
                         CustomObject customObject = new CustomObject(xAxis, yAxis, CONSTANTS.SquareWidth,CONSTANTS.SquareHeight, true, images.get(data.charAt(i)));
                         map.addCustomObject(customObject);
+                    }else if (data.charAt(i) == 'M'){
+                        map.setMario(new Mario(xAxis, yAxis, CONSTANTS.MarioWidth, CONSTANTS.MarioHeight));
                     }
+
                     xAxis += CONSTANTS.SquareWidth;
                 }
 

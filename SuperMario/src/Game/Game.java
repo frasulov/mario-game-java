@@ -1,5 +1,6 @@
 package Game;
 
+import GameObjects.Mario;
 import map.MapCamera;
 
 import javax.swing.*;
@@ -39,11 +40,16 @@ public class Game implements Runnable {
     }
 
     public void doAction(ActionType actionType){
-
+        Mario mario = gui.getMap().getMario();
         if (actionType == ActionType.LEFT){
             System.out.println("Key left pressed");
         }else if(actionType == ActionType.RIGHT) {
+            mario.setVelX(5);
             mapCamera.moveCamera(50, 0);
+        }else if (actionType == ActionType.RELEASED){
+            mario.setVelX(0);
+            System.out.println("relased left");
+
         }
     }
 

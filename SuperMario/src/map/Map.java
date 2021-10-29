@@ -10,6 +10,7 @@ public class Map {
     private ArrayList<Brick> bricks = new ArrayList<>();
     private ArrayList<QuestionBrick> questionBricks = new ArrayList<>();
     private ArrayList<CustomObject> customObjects = new ArrayList<>();
+    private Mario mario;
     private int width, height;
 
     public Map(){
@@ -46,6 +47,8 @@ public class Map {
         for(CustomObject customObject: customObjects){
             customObject.draw(g);
         }
+
+        mario.draw(g);
     }
 
     public ArrayList<GameObject> getAllObjectsInMap(){
@@ -60,6 +63,9 @@ public class Map {
         for(CustomObject customObject: customObjects){
             gameObjects.add(customObject);
         }
+
+        gameObjects.add(mario);
+
         return gameObjects;
     }
 
@@ -79,4 +85,11 @@ public class Map {
         return height;
     }
 
+    public Mario getMario() {
+        return mario;
+    }
+
+    public void setMario(Mario mario) {
+        this.mario = mario;
+    }
 }

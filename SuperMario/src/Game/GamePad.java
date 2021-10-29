@@ -27,6 +27,9 @@ public class GamePad implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        int keyCode = e.getKeyCode();
+        if (keyCode == KeyEvent.VK_RIGHT) {
+            game.doAction(ActionType.RELEASED);
+        }
     }
 }
