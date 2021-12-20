@@ -1,5 +1,10 @@
 package Game;
 
+import GameObjects.Brick;
+import GameObjects.CustomObject;
+import GameObjects.GameObject;
+import GameObjects.QuestionBrick;
+import map.Collision;
 import map.Map;
 import map.MapMaker;
 
@@ -8,20 +13,25 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GUI extends JPanel {
 
     private Map map;
+    private MapMaker mapMaker;
     private Game game;
+    private Collision collision;
 
     public GUI(Game game, int width, int height) {
         this.game = game;
         setPreferredSize(new Dimension(width, height));
         setMaximumSize(new Dimension(width, height));
         setMinimumSize(new Dimension(width, height));
-        MapMaker mapMaker = new MapMaker();
-        map = mapMaker.generateMap();
+        mapMaker = new MapMaker();
+        map = mapMaker.getMap();
         setBackground(Color.decode("#6185f8"));
+        collision = new Collision(map);
     }
 
 
@@ -59,11 +69,46 @@ public class GUI extends JPanel {
 
     }
 
+    public void objectRemover(){
+        CopyOnWriteArrayList<Brick> bricks = map.getBricks();
+        for(Brick brick: bricks){
+            if (brick.getX() < -1*brick.getWidth()){
+                map.getBricks().remove(brick);
+            }
+        }
+        CopyOnWriteArrayList<QuestionBrick> questionBricks = map.getQuestionBricks();
+        for(Brick brick: questionBricks){
+            if (brick.getX() < -1*brick.getWidth()){
+                map.getQuestionBricks().remove(brick);
+            }
+        }
+
+        CopyOnWriteArrayList<CustomObject> customObjects = map.getCustomObjects();
+        for(GameObject object: customObjects){
+            if (object.getX() < -1*object.getWidth()){
+                map.getCustomObjects().remove(object);
+            }
+        }
+    }
+
+
     public Map getMap() {
         return map;
     }
 
     public void setMap(Map map) {
         this.map = map;
+    }
+
+    public MapMaker getMapMaker() {
+        return mapMaker;
+    }
+
+    public void checkCollisions(){
+        collision.checkBottomCollision();
+        collision.updateJumpState();
+//        collision.checkTopCollision();
+//        collision.checkLeftCollision();
+//        collision.checkRightCollision();
     }
 }

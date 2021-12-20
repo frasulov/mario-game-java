@@ -1,9 +1,13 @@
 package GameObjects;
 
 import Game.CONSTANTS;
+import map.CollisionType;
+import map.MapCamera;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class GameObject {
 
@@ -13,8 +17,9 @@ public class GameObject {
     private double velX, velY;
     private Dimension dimension;
     private BufferedImage image;
+    private HashSet<CollisionType> collisionTypes;
 
-    public GameObject(double x, double y, double width, double height, boolean moveWithBackground, BufferedImage image) {
+    public GameObject(double x, double y, double width, double height, boolean moveWithBackground, BufferedImage image, CollisionType ...args) {
         this.x = x;
         this.y = y;
         this.image = image;
@@ -23,11 +28,14 @@ public class GameObject {
         this.width = width;
         this.height = height;
         this.moveWithBackground = moveWithBackground;
+        this.collisionTypes = new HashSet<>(Arrays.asList(args));
+        dimension = new Dimension((int)width, (int)height);
     }
 
-    public GameObject(double x, double y, boolean moveWithBackground, BufferedImage image) {
-        this(x,y,CONSTANTS.SquareWidth, CONSTANTS.SquareHeight,moveWithBackground, image);
+    public GameObject(double x, double y, boolean moveWithBackground, BufferedImage image, CollisionType ...args) {
+        this(x, y, CONSTANTS.SquareWidth, CONSTANTS.SquareHeight, moveWithBackground, image, args);
     }
+
 
     public void draw(Graphics g) {
         if (image != null) {
@@ -36,31 +44,31 @@ public class GameObject {
     }
 
 
-    public void updateLocation() {
+    public void updateLocation(MapCamera mapCamera) {
 
         if(this instanceof Mario){
-
-            if (((Mario) this).isJumping()) {
+            if (((Mario) this).getVertical() == MarioState.JUMPING) {
+                if (((Mario) this).getHorizontal() == MarioState.RUNNING) {
+                    if (((Mario) this).getDirection() == Direction.RIGHT && x >= CONSTANTS.WIDTH/2) {
+                        this.setVelX(0);
+                        mapCamera.setVelX(-4);
+                    }
+                }
                 if (getVelY() <= 0){
-                    ((Mario) this).setJumping(false);
-                    ((Mario) this).setFalling(true);
+                    ((Mario) this).setVertical(MarioState.FALLING);
                 }
                 velY -= CONSTANTS.Gravity;
                 y -= velY;
             }
-            if (((Mario) this).isFalling()){
-                if (getY() >= 506){
-                    ((Mario) this).setFalling(false);
-                    setVelY(0);
-                }else{
+            if (((Mario) this).getVertical() == MarioState.FALLING){
                     y += velY;
                     velY += CONSTANTS.Gravity;
-                }
             }
-
 
         }
 
+        if (this instanceof Goomba){
+        }
 
         x += velX;
     }
@@ -125,5 +133,49 @@ public class GameObject {
 
     public void setImage(BufferedImage image) {
         this.image = image;
+    }
+
+    public HashSet<CollisionType> getCollisionTypes() {
+        return collisionTypes;
+    }
+
+    public void setCollisionTypes(HashSet<CollisionType> collisionTypes) {
+        this.collisionTypes = collisionTypes;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public Rectangle getTopBounds(){
+        return new Rectangle((int)x+dimension.width/6, (int)y, 2*dimension.width/3, dimension.height/2);
+    }
+
+    public Rectangle getBottomBounds(){
+        return new Rectangle((int)x+dimension.width/6, (int)y + dimension.height/2, 2*dimension.width/3, dimension.height/2);
+    }
+
+    public Rectangle getLeftBounds(){
+        return new Rectangle((int)x, (int)y + dimension.height, dimension.width, dimension.height);
+    }
+
+    public Rectangle getRightBounds(){
+        return new Rectangle((int)x + dimension.width, (int)y + dimension.height, dimension.width, dimension.height);
+    }
+
+    public Rectangle getBounds(){
+        return new Rectangle((int)x, (int)y, dimension.width, dimension.height);
     }
 }

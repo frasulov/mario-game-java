@@ -1,6 +1,7 @@
 package GameObjects;
 
 import Game.Game;
+import map.CollisionType;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,9 +12,9 @@ public abstract class Brick extends GameObject {
     private boolean is_empty;
 
 
-    public Brick(double x, double y, BufferedImage image) {
-        super(x, y, true, image);
-        setDimension(new Dimension(20,20));
+    public Brick(double x, double y, BufferedImage image, CollisionType ...args) {
+        super(x, y, true, image, args);
+        setDimension(new Dimension((int)x,(int)y));
     }
 
     public boolean isIs_breakable() {
@@ -31,4 +32,5 @@ public abstract class Brick extends GameObject {
     public void setIs_empty(boolean is_empty) {
         this.is_empty = is_empty;
     }
+
 }

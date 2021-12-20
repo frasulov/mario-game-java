@@ -2,6 +2,7 @@ package Game;
 
 import GameObjects.Direction;
 import GameObjects.Mario;
+import GameObjects.MarioState;
 import map.MapCamera;
 
 import javax.swing.*;
@@ -47,9 +48,10 @@ public class Game implements Runnable {
         }else if(actionType == ActionType.RIGHT) {
             mario.move(Direction.RIGHT, mapCamera);
         }else if (actionType == ActionType.RELEASED){
-            mario.setRunning(false);
+            mario.setHorizontal(MarioState.IDLE);
             mario.setVelX(0);
-            mapCamera.moveCamera(0,0);
+            mapCamera.setVelX(0);
+            mapCamera.setVelY(0);
         }else if (actionType == ActionType.UP){
             mario.jump();
         }
@@ -85,7 +87,12 @@ public class Game implements Runnable {
                 ticks++;
                 tick();
                 delta -= 1;
-                gui.getMap().updateGameObjects();
+                gui.getMap().updateGameObjects(mapCamera);
+                gui.checkCollisions();
+                gui.objectRemover();
+                mapCamera.updateCameraLocation();
+//                System.out.print("Horizontal"+gui.getMap().getMario().getHorizontal());
+//                System.out.println("--Vertical"+gui.getMap().getMario().getVertical());
                 frames++;
             }
             gui.repaint();
@@ -99,8 +106,6 @@ public class Game implements Runnable {
 
         }
     }
-
-
 
 
     public void tick() {

@@ -1,6 +1,7 @@
 package GameObjects;
 
 import Game.CONSTANTS;
+import map.CollisionType;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -13,8 +14,8 @@ public class NormalBrick extends Brick{
     private Animation animation;
     private boolean broke;
 
-    public NormalBrick(double x, double y, BufferedImage image) {
-        super(x, y, image);
+    public NormalBrick(double x, double y, BufferedImage image, CollisionType ...types) {
+        super(x, y, image, types);
         setIs_breakable(true);
         setIs_empty(true);
     }
