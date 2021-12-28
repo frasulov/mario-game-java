@@ -106,7 +106,9 @@ public class GUI extends JPanel {
 
     public void checkCollisions(){
         collision.checkBottomCollision();
-        collision.updateJumpState();
+        collision.checkYCordinateCollision();
+        collision.checkXCordinateCollsion();
+//        collision.updateJumpState();
 //        collision.checkTopCollision();
 //        collision.checkLeftCollision();
 //        collision.checkRightCollision();

@@ -8,7 +8,7 @@ public class CONSTANTS {
     public static final int HEIGHT = 644;
     public static final int MarioWidth = 32;
     public static final int MarioHeight = 50;
-    public static final double Gravity = 0.4;
+    public static final double Gravity = 0.30;
     public final static String FilePath = "/Users/feqanrasulov/Desktop/mario-game-java/";
 
     private CONSTANTS(){

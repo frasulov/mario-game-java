@@ -29,121 +29,53 @@ public class Collision {
                 mario.setVelY(0);
             }
         }
-
-//        List<GameObject> objects = map.getBricks().stream().filter(x -> !(x instanceof FloorBrick) && x.getCollisionTypes().contains(CollisionType.TOP)).collect(Collectors.toList());
-//        for(GameObject object: objects) {
-//            if (mario.isFalling() && mario.getX() + mario.getWidth() >= object.getX() &&
-//                    mario.getX() <= object.getX() + object.getWidth() &&
-//                    mario.getY() + mario.getHeight() >= object.getY()) {
-//                mario.setVelY(0);
-//                mario.setFalling(false);
-//                mario.setY(object.getY() - mario.getHeight());
-//            }
-//        }
-
     }
 
-    public void updateJumpState(){
+    public void checkYCordinateCollision(){
         Mario mario = map.getMario();
-
-        if (mario.getHorizontal() == MarioState.IDLE)
-            return;
-
-        List<GameObject> objects = map.getBricks().stream().filter(x -> x.getCollisionTypes().contains(CollisionType.TOP)).collect(Collectors.toList());
-        int count = 0;
-
-//        if (mario.getVertical() != MarioState.JUMPING){
-//            mario.setVertical(MarioState.FALLING);
-//        }
-
-//        for(GameObject object: objects){
-////
-//            if (mario.getX() + mario.getWidth() > object.getX() && mario.getX() < object.getX() + object.getWidth()){
-//                count ++;
-//            }
-//
-//
-//            if (marioLocation >= object.getY() && marioLocation <= object.getY() + object.getHeight()){
-//                count ++;
-//            }
-//        }
-//        if (count != 0){
-//            mario.setVelY(0);
-//            mario.setFalling(true);
-//        }
-    }
-
-    public void checkTopCollision(){
-        Mario mario = map.getMario();
-        List<GameObject> objects = map.getBricks().stream().filter(x -> x.getCollisionTypes().contains(CollisionType.BOTTOM)).collect(Collectors.toList());
-//        for(GameObject object: objects) {
-//            if (mario.isJumping() && mario.getRectangle().intersects(object.getRectangle())) {
-//                mario.setVelY(0);
-//                mario.setJumping(false);
-//                mario.setFalling(true);
-//                mario.setY(object.getY() + object.getHeight());
-//            }
-//
-//
-//        }
-    }
-
-    public void checkLeftCollision(){
-
-        Mario mario = map.getMario();
-        List<GameObject> objects = map.getBricks().stream().filter(x -> x.getCollisionTypes().contains(CollisionType.LEFT)).collect(Collectors.toList());
-        for (GameObject object : objects) {
-            if (mario.getDirection() == Direction.RIGHT &&
-                mario.getRightBounds().intersects(object.getLeftBounds())) {
-                mario.setVelX(0);
-                mario.setX(object.getX() - mario.getDimension().width);
+        ArrayList<GameObject> objects = map.getAllObjectsInMap();
+        for (GameObject object: objects) {
+            if (object instanceof Brick && !(object instanceof FloorBrick)) {
+                if (mario.getVertical() == MarioState.JUMPING) {
+                    if(
+                            (mario.getX() > object.getX() && mario.getX() < object.getX()+object.getWidth()) &&
+                                    (mario.getY() < object.getY() + object.getHeight() && mario.getY() > object.getY())
+                    ){
+                        mario.setVelY(0);
+                        mario.setHorizontal(MarioState.FALLING);
+                        mario.setY(object.getY() + object.getHeight() + 2);
+                        System.out.println("y mario"+mario.getY());
+                        System.out.println("y object:" + object.getY() + object.getClass());
+                    }
+                }
             }
         }
-
-
-//        for(GameObject object: objects){
-//            if (mario.getDirection() == Direction.RIGHT && mario.getRectangle().intersects(object.getRectangle())){
-//                mario.setVelX(0);
-////                mario.setX(object.getX() - mario.getWidth());
-//                mario.setX(mario.getX() - 1);
-//            }
-
-
-//            if(mario.getDirection() == Direction.RIGHT &&
-//               mario.getX() + mario.getWidth() > object.getX() &&
-//               mario.getX() < object.getX() + object.getWidth() &&
-//               object.getY() <= mario.getY() + mario.getHeight() &&
-//               object.getY() + object.getHeight() >= mario.getY()){
-//                    mario.setVelX(0);
-//                    mario.setX(object.getX() - mario.getWidth());
-//            }
-//        }
     }
 
-    public void checkRightCollision(){
+    public void checkXCordinateCollsion(){
+        Mario mario = map.getMario();
+        ArrayList<GameObject> objects = map.getAllObjectsInMap();
+        for (GameObject object: objects) {
+            if (object instanceof Brick && !(object instanceof FloorBrick)) {
+                if (mario.getDirection() == Direction.RIGHT) {
+                    if( (mario.getX() + mario.getWidth() > object.getX() && mario.getX()+ mario.getWidth() < object.getX() + object.getWidth())
+                            && ((mario.getY() < object.getY() + object.getHeight() && mario.getY() > object.getY()) ||
+                            (mario.getY() + mario.getHeight() < object.getY() && mario.getY() + mario.getHeight() > object.getY()))){
 
+                    mario.setVelX(0);
+                    mario.setX(object.getX() - mario.getWidth());
+                    }
+                }else {
+                    if ((mario.getX() < object.getX() + object.getWidth() && mario.getX() > object.getX())
+                            && ((mario.getY() < object.getY() + object.getHeight() && mario.getY() > object.getY()) ||
+                            (mario.getY() + mario.getHeight() < object.getY() && mario.getY() + mario.getHeight() > object.getY()))) {
 
-//        Mario mario = map.getMario();
-//        List<GameObject> objects = map.getBricks().stream().filter(x -> x.getCollisionTypes().contains(CollisionType.RIGHT)).collect(Collectors.toList());
-//        for(GameObject object: objects) {
-//            if (mario.getDirection() == Direction.LEFT && !mario.isJumping() && mario.getRectangle().intersects(object.getRectangle())) {
-//                mario.setVelX(0);
-//                mario.setX(object.getX() + object.getWidth());
-//            }
-//        }
-
-
-        //        for(GameObject object: objects){
-//            if(mario.getDirection() == Direction.LEFT &&
-//                    mario.getX() < object.getX() + object.getWidth() &&
-//                    mario.getX() > object.getX() &&
-//                    object.getY() <= mario.getY() + mario.getHeight() &&
-//                    object.getY() + object.getHeight() >= mario.getY()){
-//                mario.setVelX(0);
-//                mario.setX(object.getX() + object.getWidth());
-//            }
-//        }
-
+                        mario.setVelX(0);
+                        mario.setX(object.getX() + mario.getWidth());
+                    }
+                }
+            }
+        }
     }
 
 }
